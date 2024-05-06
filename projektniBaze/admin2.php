@@ -48,7 +48,7 @@
 
         $conn = new mysqli($servername, $username, $password, $database);
 
-        // Provjera konekcije
+        
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
@@ -62,7 +62,7 @@
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            // Prikaz svih korisnika i njihovih vozila u tabeli
+            
             while($row = $result->fetch_assoc()) {
                 echo "<tr>
                         <td>".$row["ime"]."</td>

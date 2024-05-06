@@ -1,31 +1,10 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: May 04, 2024 at 04:13 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
 -- Database: `registracija_vozila`
---
 
--- --------------------------------------------------------
-
---
--- Table structure for table `registracija`
---
+--  `registracija`
 
 CREATE TABLE `registracija` (
   `ID_registracija` int(11) NOT NULL,
@@ -36,9 +15,7 @@ CREATE TABLE `registracija` (
   `kategorija` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `registracija`
---
+-- podaci za `registracija`
 
 INSERT INTO `registracija` (`ID_registracija`, `ID_vozilo`, `datum_registracije`, `datum_isteka_reg`, `cijena_registracije`, `kategorija`) VALUES
 (1, 1, '2023-05-02', '2024-05-02', '450.00 KM', 'Lični automobil'),
@@ -67,11 +44,7 @@ INSERT INTO `registracija` (`ID_registracija`, `ID_vozilo`, `datum_registracije`
 (24, 22, '2023-09-19', '2024-09-19', '390.00 KM', 'Lični automobil'),
 (25, 23, '2023-08-08', '2024-08-08', '490.00 KM', 'Lični automobil');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `vlasnik`
---
+-- `vlasnik`
 
 CREATE TABLE `vlasnik` (
   `ID_vlasnik` int(11) NOT NULL,
@@ -83,9 +56,7 @@ CREATE TABLE `vlasnik` (
   `password` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `vlasnik`
---
+-- podaci za`vlasnik`
 
 INSERT INTO `vlasnik` (`ID_vlasnik`, `ime`, `prezime`, `adresa`, `broj_telefona`, `username`, `password`) VALUES
 (1, 'Amar', 'Hodžić', 'Sarajevo, Titova 1', '061123456', 'amarHodzic@example.com', 'sifra12'),
@@ -114,11 +85,8 @@ INSERT INTO `vlasnik` (`ID_vlasnik`, `ime`, `prezime`, `adresa`, `broj_telefona`
 (24, 'Amra', 'Mujkić', 'Bihać, Dvadeseta ulica 24', '064456783', 'amraMujkic@example.com', 'sifra12'),
 (25, 'Elvir', 'Ahmetović', 'Banja Luka, Dvadesetprva ulica 25', '065567894', 'elvirAhmetovic@example.com', 'sifra12');
 
--- --------------------------------------------------------
+--`vozilo`
 
---
--- Table structure for table `vozilo`
---
 
 CREATE TABLE `vozilo` (
   `ID_vozilo` int(11) NOT NULL,
@@ -128,9 +96,7 @@ CREATE TABLE `vozilo` (
   `godina_proizvodnje` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `vozilo`
---
+-- podaci `vozilo`
 
 INSERT INTO `vozilo` (`ID_vozilo`, `ID_vlasnik`, `marka`, `model`, `godina_proizvodnje`) VALUES
 (1, 2, 'Audi', 'A3', '2015'),
@@ -158,11 +124,6 @@ INSERT INTO `vozilo` (`ID_vozilo`, `ID_vlasnik`, `marka`, `model`, `godina_proiz
 (23, 22, 'Škoda', 'Superb', '2017'),
 (24, 24, 'Mitsubishi ', 'Outlander', '2015'),
 (25, 23, 'Seat', ' Ibiza', '2016');
-
---
--- Indexes for dumped tables
---
-
 --
 -- Indexes for table `registracija`
 --
@@ -222,6 +183,4 @@ ALTER TABLE `vozilo`
   ADD CONSTRAINT `vozilo_ibfk_1` FOREIGN KEY (`ID_vlasnik`) REFERENCES `vlasnik` (`ID_vlasnik`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -1,5 +1,4 @@
 <?php
-// Povezivanje s bazom podataka
 $servername = "localhost";
 $username = "root";
 $password = "sifra123";
@@ -7,7 +6,6 @@ $database = "registracija_vozila";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
-// Provjera konekcije
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -28,6 +26,6 @@ if (isset($_GET['id'])) {
     echo "Nije poslan ID korisnika za brisanje.";
 }
 
-// Zatvaranje konekcije s bazom
+
 $conn->close();
 ?>

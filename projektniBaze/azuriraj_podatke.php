@@ -1,5 +1,4 @@
 <?php
-// Povezivanje s bazom podataka
 $servername = "localhost";
 $username = "root";
 $password = "sifra123";
@@ -7,14 +6,13 @@ $database = "registracija_vozila";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
-// Provjera konekcije
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Provjera je li primljeni podaci iz forme
+// Provjera jesu li primljeni podaci iz forme
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Priprema podataka za unos u bazu
+    // Priprema podataka za bazu
     $id = $_POST['id'];
     $ime = $_POST['ime'];
     $prezime = $_POST['prezime'];
@@ -27,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $datum_isteka_reg = $_POST['datum_isteka_reg'];
     $cijena_registracije = $_POST['cijena'];
 
-    // SQL upit za ažuriranje podataka korisnika
+    // SQL ažuriranje podataka korisnika
     $sql = "UPDATE vlasnik 
             LEFT JOIN vozilo ON vlasnik.ID_vlasnik = vozilo.ID_vlasnik 
             LEFT JOIN registracija ON vozilo.ID_vozilo = registracija.ID_vozilo 

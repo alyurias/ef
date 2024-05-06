@@ -1,18 +1,17 @@
 <?php
-// Uspostavljanje veze s bazom podataka
 $servername = "localhost";
-$username = "root"; // Vaše korisničko ime baze podataka
-$password = "sifra123"; // Vaša lozinka baze podataka
-$dbname = "registracija_vozila"; // Naziv vaše baze podataka
+$username = "root"; 
+$password = "sifra123"; 
+$dbname = "registracija_vozila"; 
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Provjera konekcije
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Provjera da li su poslani podaci iz forme
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $lozinka = $_POST['lozinka'];
@@ -21,28 +20,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM vlasnik WHERE username='$email' AND password='$lozinka'";
     $result = $conn->query($sql);
 
-    // Provjera rezultata upita
+   
     if ($result->num_rows > 0) {
-        // Korisnik pronađen, prikaži informacije
+      
         $row = $result->fetch_assoc();
         $vlasnikID = $row['ID_vlasnik'];
 
-        // Dohvati informacije o vlasniku
+        // Informacije o vlasniku
         $vlasnik_sql = "SELECT * FROM vlasnik WHERE ID_vlasnik='$vlasnikID'";
         $vlasnik_result = $conn->query($vlasnik_sql);
         $vlasnik_row = $vlasnik_result->fetch_assoc();
 
-        // Dohvati informacije o vozilu
+        // Informacije o vozilu
         $vozilo_sql = "SELECT * FROM vozilo WHERE ID_vlasnik='$vlasnikID'";
         $vozilo_result = $conn->query($vozilo_sql);
         $vozilo_row = $vozilo_result->fetch_assoc();
 
-        // Dohvati informacije o registraciji
+        // Informacije o registraciji
         $registracija_sql = "SELECT * FROM registracija WHERE ID_vozilo='{$vozilo_row['ID_vozilo']}'";
         $registracija_result = $conn->query($registracija_sql);
         $registracija_row = $registracija_result->fetch_assoc();
 
-        // Generiraj HTML za prikaz informacija
+       
         $html_content = "
         <!DOCTYPE html>
         <html lang='en'>
@@ -94,14 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </body>
         </html>";
 
-        // Ispis HTML-a
+       
         echo $html_content;
     } else {
-        // Korisnik nije pronađen
+        
         echo "Pogrešno korisničko ime ili lozinka.";
     }
 }
 
-// Zatvaranje konekcije s bazom podataka
+
 $conn->close();
 ?>
