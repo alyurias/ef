@@ -1,0 +1,107 @@
+<?php
+// Uspostavljanje veze s bazom podataka
+$servername = "localhost";
+$username = "root"; // Vaše korisničko ime baze podataka
+$password = "sifra123"; // Vaša lozinka baze podataka
+$dbname = "registracija_vozila"; // Naziv vaše baze podataka
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Provjera konekcije
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Provjera da li su poslani podaci iz forme
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $lozinka = $_POST['lozinka'];
+
+    // SQL upit za provjeru korisnika u bazi
+    $sql = "SELECT * FROM vlasnik WHERE username='$email' AND password='$lozinka'";
+    $result = $conn->query($sql);
+
+    // Provjera rezultata upita
+    if ($result->num_rows > 0) {
+        // Korisnik pronađen, prikaži informacije
+        $row = $result->fetch_assoc();
+        $vlasnikID = $row['ID_vlasnik'];
+
+        // Dohvati informacije o vlasniku
+        $vlasnik_sql = "SELECT * FROM vlasnik WHERE ID_vlasnik='$vlasnikID'";
+        $vlasnik_result = $conn->query($vlasnik_sql);
+        $vlasnik_row = $vlasnik_result->fetch_assoc();
+
+        // Dohvati informacije o vozilu
+        $vozilo_sql = "SELECT * FROM vozilo WHERE ID_vlasnik='$vlasnikID'";
+        $vozilo_result = $conn->query($vozilo_sql);
+        $vozilo_row = $vozilo_result->fetch_assoc();
+
+        // Dohvati informacije o registraciji
+        $registracija_sql = "SELECT * FROM registracija WHERE ID_vozilo='{$vozilo_row['ID_vozilo']}'";
+        $registracija_result = $conn->query($registracija_sql);
+        $registracija_row = $registracija_result->fetch_assoc();
+
+        // Generiraj HTML za prikaz informacija
+        $html_content = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Početna</title>
+            <link rel='stylesheet' href='dashboard.css'>
+            <script src='https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js'></script>
+        </head>
+        <body>
+            <header class='header'>
+                <div class='logo'>
+                    <img src='1.png' alt='Logo'>
+                </div>
+                <div class='navigation'>
+                    <a class='button' href='index.html'>
+                        <img src='3.png'>
+                        <div class='logout'>odjava</div>
+                    </a>
+                </div>
+                <br>
+                <br>
+            </header>
+            <h1>Dobrodošli u RegAuto.</h1>
+            <div class='registration-details'>
+                <h2>Vaši detalji o registraciji auta:</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vrsta vozila</th>
+                            <th>Model vozila</th>
+                            <th>Datum registracije</th>
+                            <th>Istek registracije</th>
+                            <th>Cijena registracije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>" . $vozilo_row['marka'] . "</td>
+                            <td>" . $vozilo_row['model'] . "</td>
+                            <td>" . $registracija_row['datum_registracije'] . "</td>
+                            <td>" . $registracija_row['datum_isteka_reg'] . "</td>
+                            <td>" . $registracija_row['cijena_registracije'] . "</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </body>
+        </html>";
+
+        // Ispis HTML-a
+        echo $html_content;
+    } else {
+        // Korisnik nije pronađen
+        echo "Pogrešno korisničko ime ili lozinka.";
+    }
+}
+
+// Zatvaranje konekcije s bazom podataka
+$conn->close();
+?>
